@@ -10,7 +10,8 @@ class Server {
         this.port = 3000;
 
         this.paths = {
-            user: '/v1/users'
+            users: '/v1/users',
+            shoes: '/v1/shoes'
         }
 
         //Connect to DB
@@ -23,7 +24,8 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.user, require('../routes/users.routes'));
+        this.app.use(this.paths.users, require('../routes/users.routes'));
+        this.app.use(this.paths.shoes, require('../routes/shoes.routes'));
     }
 
     listen() {
