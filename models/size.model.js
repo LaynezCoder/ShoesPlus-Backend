@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const SizeSchema = Schema({
-    name:{
+    name: {
         type: Number,
         required: [
             true,

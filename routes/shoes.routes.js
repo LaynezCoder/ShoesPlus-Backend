@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { } = require('../helpers/validators');
+const {} = require('../helpers/validators');
 
 const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
 
