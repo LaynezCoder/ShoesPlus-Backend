@@ -43,6 +43,10 @@ const ShoeSchema = Schema({
         type: Date,
         default: Date.now
     },
+    status: {
+        type: Boolean,
+        default: true,
+    },
     images: [String],
     colors: [String],
     collection_shoe: {

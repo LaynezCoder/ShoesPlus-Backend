@@ -11,7 +11,8 @@ class Server {
 
         this.paths = {
             users: '/v1/users',
-            shoes: '/v1/shoes'
+            shoes: '/v1/shoes',
+            categories: '/v1/categories'
         }
 
         //Connect to DB
@@ -26,6 +27,7 @@ class Server {
     routes() {
         this.app.use(this.paths.users, require('../routes/users.routes'));
         this.app.use(this.paths.shoes, require('../routes/shoes.routes'));
+        this.app.use(this.paths.categories, require('../routes/categories.routes'));
     }
 
     listen() {
