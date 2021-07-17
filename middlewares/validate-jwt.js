@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user.model')
 
+const EXAMPLE_SECRET_KEY = 'Shhhh';
+
 const validateJWT = async(req = request, res = response, next) => {
     const token = req.header('Authorization');
 
@@ -11,7 +13,7 @@ const validateJWT = async(req = request, res = response, next) => {
     }
 
     try {
-        const { id } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
+        const { id } = jwt.verify(token, EXAMPLE_SECRET_KEY);
 
         const user = await User.findById(id);
 
