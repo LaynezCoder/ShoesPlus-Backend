@@ -22,7 +22,7 @@ const CategorySchema = Schema({
     },
     status: {
         type: Boolean,
-        default: True
+        default: true
     }
 })
 
