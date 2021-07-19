@@ -5,10 +5,10 @@ const isAdmin = (req, res = response, next) => {
         return res.status(500).send({ message: 'There is no token in the request' });
     }
 
-    const { role, name } = req.user;
+    const { role, username } = req.user;
 
     if (role !== 'ADMIN') {
-        return res.status(401).send({ message: `${name}, you dont have permissions for this route` })
+        return res.status(401).send({ message: `${username}, you dont have permissions for this route` })
     }
 
     next();
@@ -20,10 +20,10 @@ const withRole = (...roles) => {
             return res.status(500).send({ message: 'There is no token in the request' });
         }
 
-        const { role, name } = req.user;
+        const { role, username } = req.user;
 
         if (!roles.includes(role)) {
-            return res.status(401).send({ message: `${name}, you dont have permissions for this route` })
+            return res.status(401).send({ message: `${username}, you dont have permissions for this route` })
         }
 
         next();
