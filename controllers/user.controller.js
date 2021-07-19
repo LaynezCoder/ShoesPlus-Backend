@@ -103,10 +103,54 @@ const deleteProfile = async(req, res) => {
     res.send({ ok: true, user });
 }
 
+const infoProfile = async(req, res) => {
+    const { id } = req.user;
+
+    const user = await User.findById(id);
+
+    res.send({ ok: true, user });
+}
+
+const deleteUser = async(req, res) => {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndUpdate(id, { status: false });
+
+    res.send({ ok: true, message: `User ${user.username} deleted`, user })
+}
+
+const updateUser = async(req, res) => {
+    const { id: idUserReq } = req.user;
+    const { id } = req.params;
+    const { role } = req.body;
+
+    const roles = ['user', 'admin'];
+
+    if (!roles.includes(role.toLowerCase())) {
+        return res.status(400).send({ message: `The ${role} role is invalid` });
+    }
+
+    const find = await User.findById(id);
+    if (find.id == idUserReq) {
+        return res.status(400).send({ messages: 'I cant update yourself' })
+    }
+
+    if (find.role === 'ADMIN' && role !== 'ADMIN') {
+        return res.status(400).send({ messages: 'You cannot upgrade to administrator type user' })
+    }
+
+    const user = await User.findByIdAndUpdate(id, { role: role.toUpperCase() }, { new: true });
+
+    res.send({ ok: true, message: `User ${user.username} updated`, user })
+}
+
 module.exports = {
     createAdmin,
     signUp,
     login,
     updateProfile,
-    deleteProfile
+    deleteProfile,
+    infoProfile,
+    deleteUser,
+    updateUser
 }

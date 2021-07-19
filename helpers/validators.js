@@ -17,14 +17,22 @@ const isExistsCategoryById = async(id) => {
 }
 
 const isExistsUsername = async(username) => {
-    const isExistsUsername = await User.findOne({ username: trim(username) });
-    if (isExistsUsername) {
+    const user = await User.findOne({ username: trim(username) });
+    if (user) {
         throw new Error(`This username ${username} exists`);
+    }
+}
+
+const isExistsUserById = async(id) => {
+    const user = await User.findById(id);
+    if (!user) {
+        throw new Error(`This id ${id} doesn't exists`);
     }
 }
 
 module.exports = {
     isExistsCategory,
     isExistsCategoryById,
-    isExistsUsername
+    isExistsUsername,
+    isExistsUserById
 }

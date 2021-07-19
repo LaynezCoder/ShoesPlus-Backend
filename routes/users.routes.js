@@ -1,11 +1,11 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { isExistsUsername } = require('../helpers/validators');
+const { isExistsUsername, isExistsUserById } = require('../helpers/validators');
 
-const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
+const { validateFields, validateJWT, withRole } = require('../middlewares')
 
-const { signUp, login, updateProfile, deleteProfile } = require('../controllers/user.controller');
+const { signUp, login, updateProfile, deleteProfile, infoProfile, deleteUser, updateUser } = require('../controllers/user.controller');
 
 const router = Router();
 
@@ -40,5 +40,25 @@ router.delete('/deleteProfile', [
     check('password', 'Password is required').not().isEmpty(),
     validateFields
 ], deleteProfile);
+
+router.get('/profile', validateJWT, infoProfile);
+
+router.put('/update/:id', [
+    validateJWT,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsUserById),
+    check('role', 'Role is required').not().isEmpty(),
+    withRole('ADMIN'),
+    validateFields
+], updateUser);
+
+router.delete('/delete/:id', [
+    validateJWT,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsUserById),
+    withRole('ADMIN'),
+    validateFields
+], deleteUser);
+
 
 module.exports = router;
