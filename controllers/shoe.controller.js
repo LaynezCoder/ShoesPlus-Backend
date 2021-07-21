@@ -39,12 +39,9 @@ const createSize = async(req, res) => {
 } */
 
 const createShoe = async (req, res) => {
-    const { idC, idCA, idS } = req.params;
-    const { barcode, name, description, price, quantity } = req.body;
-    const collection = Collection.findById({ idC });
-    const category = Category.findById({ idCA });
-    const size = Size.findById({ idS });
-    const shoe = new Collection({ barcode, name, description, price, collection, category, size, quantity });
+    const { idCol, idCat } = req.params;
+    const { barcode, name, description, price, sizes } = req.body;
+    const shoe = new Shoe({ barcode, name: name.toLowerCase(), description, price, collection_shoe: idCol, category: idCat, sizes });
 
     await shoe.save();
 

@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongoose').Types;
+
 const { User, Category, Brand, Size, Collection, Shoe } = require('../models');
 
 const { trim } = require('./string-utils');
@@ -86,6 +88,46 @@ const isExistsShoeById = async (id) => {
     }
 }
 
+const isExistsBarcode = async (barcode) => {
+    const isExistsBarcode = await Shoe.findOne({ barcode });
+    if (isExistsBarcode) {
+        throw new Error(`This barcode ${isExistsBarcode.barcode} already exists`);
+    }
+}
+
+const validateIds = (sizes) => {
+    sizes.forEach(e => {
+        if (!ObjectId.isValid(e.size)) {
+            throw new Error(`This ${e.size} is not valid`);
+        }
+    })
+    return true;
+}
+
+const validateQuantity = (req, res, next) => {
+    const { sizes } = req.body;
+
+    let isNumber = false;
+    for (let e of sizes) {
+        if (!isNumeric(e.quantity)) {
+            isNumber = true;
+            break;
+        }
+    }
+
+    if (isNumber) {
+        return res.status(400).send({ message: 'This quantity is not a number', })
+    }
+
+    next();
+}
+
+const isNumeric = (n) => {
+    return /^\d+$/.test(n);
+}
+
+
+
 
 
 module.exports = {
@@ -100,5 +142,8 @@ module.exports = {
     isExistsCollection,
     isExistsCollectionById,
     isExistsShoe,
-    isExistsShoeById
+    isExistsShoeById,
+    validateIds,
+    validateQuantity,
+    isExistsBarcode
 }
