@@ -3,8 +3,7 @@ const { Collection, Brand } = require('../models')
 const createCollection = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
-    const brand = Brand.findById({ id });
-    const collection = new Collection({ name: name.toLowerCase(), brand });
+    const collection = new Collection({ name: name.toLowerCase(), brand: id });
 
     await collection.save();
 
