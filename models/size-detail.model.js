@@ -9,6 +9,13 @@ const SizeDetailSchema = Schema({
             'The size is required'
         ]
     },
+    color: {
+        type: String,
+        required: [
+            true,
+            'The color is required'
+        ],
+    },
     quantity: {
         type: Number,
         required: [

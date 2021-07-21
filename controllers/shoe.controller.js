@@ -1,6 +1,6 @@
 const { Shoe, Category, Size, SizeDetail } = require('../models')
 
-const createShoe = async(req, res) => {
+const createShoe = async (req, res) => {
     const { idCol, idCat } = req.params;
     const { barcode, name, description, price, sizes } = req.body;
 
@@ -16,7 +16,7 @@ const createShoe = async(req, res) => {
     res.send({ ok: true, message: `Shoe ${shoe.name} saved`, shoe });
 }
 
-const updateShoe = async(req, res) => {
+const updateShoe = async (req, res) => {
     const { id } = req.params;
     const { barcode, name, description, price } = req.body;
 
@@ -25,7 +25,7 @@ const updateShoe = async(req, res) => {
     res.send({ ok: true, message: `Shoe ${shoe.name} updated`, shoe });
 }
 
-const deleteShoe = async(req, res) => {
+const deleteShoe = async (req, res) => {
     const { id } = req.params;
 
     const shoe = await Shoe.findByIdAndUpdate(id, { status: false }, { new: true });
@@ -33,13 +33,13 @@ const deleteShoe = async(req, res) => {
     res.send({ ok: true, message: `Shoe ${shoe.name} deleted`, shoe });
 }
 
-const getShoes = async(req, res) => {
+const getShoes = async (req, res) => {
     const shoes = await Shoe.find({});
 
     res.send({ ok: true, shoes })
 }
 
-const getShoeById = async(req, res) => {
+const getShoeById = async (req, res) => {
     const { id } = req.params;
     const shoe = await Shoe.findById(id);
 

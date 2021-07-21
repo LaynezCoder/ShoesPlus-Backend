@@ -48,7 +48,6 @@ const ShoeSchema = Schema({
         default: true,
     },
     images: [String],
-    colors: [String],
     collection_shoe: {
         type: Schema.Types.ObjectId,
         ref: 'collection_shoe',
