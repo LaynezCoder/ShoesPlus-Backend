@@ -1,56 +1,55 @@
-const { Shoe, Category, Size } = require('../models')
-
-/* FOR TEST
-const test = async(req, res) => {
-    const data = {
-        barcode: 023203,
-        name: 'Adidas',
-        description: 'Test descripcion',
-        price: 200,
-        collection_shoe: '602f29013e3e4704f8411c56',
-        category: '602f29013e3e4704f8411c56',
-        sizes: [{
-                size: '60f32d525ece3d1a40e746d2',
-                quantity: 15
-            },
-            {
-                size: '60f32d6dc705752c28bce94c',
-                quantity: 15
-            }
-        ]
-
-    }
-
-    const shoe = new Shoe(data);
-    await shoe.save();
-    res.send({ shoe })
-}
-
-const getShoes = async(req, res) => {
-    const shoe = await Shoe.findOne({ name: 'Adidas' }).populate('sizes.size');
-    res.send({ shoe })
-}
-
-const createSize = async(req, res) => {
-    const size = new Size({ name: 5 });
-
-    await size.save();
-    res.send({ size })
-} */
+const { Shoe, Category, Size, SizeDetail } = require('../models')
 
 const createShoe = async(req, res) => {
     const { idCol, idCat } = req.params;
     const { barcode, name, description, price, sizes } = req.body;
-    const shoe = new Shoe({ barcode, name: name.toLowerCase(), description, price, collection_shoe: idCol, category: idCat, sizes });
+
+
+    const sizedetails = await SizeDetail.insertMany(sizes)
+
+    const ids = sizedetails.map(s => s._id);
+
+    const shoe = new Shoe({ barcode, name: name.toLowerCase(), description, price, collection_shoe: idCol, category: idCat, sizes: ids });
 
     await shoe.save();
 
     res.send({ ok: true, message: `Shoe ${shoe.name} saved`, shoe });
 }
 
+const updateShoe = async(req, res) => {
+    const { id } = req.params;
+    const { barcode, name, description, price } = req.body;
 
+    const shoe = await Shoe.findByIdAndUpdate(id, { name: name.toLowerCase(), barcode, description, price }, { new: true });
 
+    res.send({ ok: true, message: `Shoe ${shoe.name} updated`, shoe });
+}
+
+const deleteShoe = async(req, res) => {
+    const { id } = req.params;
+
+    const shoe = await Shoe.findByIdAndUpdate(id, { status: false }, { new: true });
+
+    res.send({ ok: true, message: `Shoe ${shoe.name} deleted`, shoe });
+}
+
+const getShoes = async(req, res) => {
+    const shoes = await Shoe.find({});
+
+    res.send({ ok: true, shoes })
+}
+
+const getShoeById = async(req, res) => {
+    const { id } = req.params;
+    const shoe = await Shoe.findById(id);
+
+    res.send({ ok: true, shoe })
+}
 
 module.exports = {
-    createShoe
+    createShoe,
+    updateShoe,
+    deleteShoe,
+    getShoes,
+    getShoeById
 }

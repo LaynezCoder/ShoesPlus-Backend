@@ -10,6 +10,8 @@ const { createCategory, updateCategory, deleteCategory, getCategories, getCatego
 const router = Router();
 
 router.post('/create', [
+    validateJWT,
+    isAdmin,
     check('name', 'This name is required').not().isEmpty(),
     check('description', 'This description is required').not().isEmpty(),
     check('name').custom(isExistsCategory),

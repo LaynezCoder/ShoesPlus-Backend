@@ -6,6 +6,7 @@ const Size = require('./size.model');
 const Collection = require('./collection.model');
 const Shoe = require('./shoe.model');
 const Order = require('./order.model');
+const SizeDetail = require('./size-detail.model')
 
 module.exports = {
     Server,
@@ -15,5 +16,6 @@ module.exports = {
     Size,
     Collection,
     Shoe,
-    Order
+    Order,
+    SizeDetail
 }

@@ -5,7 +5,7 @@ const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExists
 
 const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createShoe } = require('../controllers/shoe.controller')
+const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById } = require('../controllers/shoe.controller')
 
 const router = Router();
 
@@ -26,6 +26,36 @@ router.post('/create/:idCat/:idCol', [
     check('sizes').custom(isExistSizes),
     validateFields,
 ], createShoe);
+
+router.put('/update/:id', [
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('name', 'This name is required').not().isEmpty(),
+    check('barcode', 'This needs to be a barcode number!').isNumeric(),
+    check('description', 'This description is required').not().isEmpty(),
+    check('price', 'This needs to be a price!').isNumeric(),
+    check('name').custom(isExistsShoe),
+    check('barcode').custom(isExistsBarcode),
+    validateFields
+], updateShoe)
+
+router.delete('/delete/:id', [
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    validateFields
+], deleteShoe)
+
+router.get('/get', getShoes)
+
+router.get('/getById/:id', [
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    validateFields
+], getShoeById)
+
+
+
+
 
 
 module.exports = router;
