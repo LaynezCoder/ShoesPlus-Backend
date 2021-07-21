@@ -14,7 +14,9 @@ class Server {
             shoes: '/v1/shoes',
             categories: '/v1/categories',
             brands: '/v1/brands',
-            sizes: '/v1/sizes'
+            sizes: '/v1/sizes',
+            collections: '/v1/collections',
+            shoes: '/v1/shoes'
         }
 
         //Connect to DB
@@ -28,10 +30,11 @@ class Server {
 
     routes() {
         this.app.use(this.paths.users, require('../routes/users.routes'));
-        this.app.use(this.paths.shoes, require('../routes/shoes.routes'));
         this.app.use(this.paths.categories, require('../routes/categories.routes'));
         this.app.use(this.paths.brands, require('../routes/brands.routes'));
         this.app.use(this.paths.sizes, require('../routes/sizes.routes'));
+        this.app.use(this.paths.collections, require('../routes/collections.routes'));
+        this.app.use(this.paths.shoes, require('../routes/shoes.routes'));
     }
 
     listen() {

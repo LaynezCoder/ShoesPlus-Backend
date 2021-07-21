@@ -1,0 +1,609 @@
+{
+	"info": {
+		"_postman_id": "81348367-0bb6-4da8-825b-28dac685b9fa",
+		"name": "ShoesPlusDB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Categorias",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Shoes 123",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Sneakers Test 123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/categories/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"categories",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Sneakers OA",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Sneakers 1233",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/categories/update/60f358d663ceb83564bc09dc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"categories",
+								"update",
+								"60f358d663ceb83564bc09dc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/categories/delete/60f35e46ec58fa339cd7fd6b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"categories",
+								"delete",
+								"60f35e46ec58fa339cd7fd6b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/categories/get",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"categories",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/v1/categories/getById/60f35e46ec58fa339cd7fd6b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"categories",
+								"getById",
+								"60f35e46ec58fa339cd7fd6b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Colecciones",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Jordans",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/collections/create/60f81f63f158ba2d10d89950",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"collections",
+								"create",
+								"60f81f63f158ba2d10d89950"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/collections/update/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"collections",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/collections/delete/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"collections",
+								"delete",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/collections/get",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"collections",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/collections/getById/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"collections",
+								"getById",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Marcas",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Adidas",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/brands/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"brands",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/brands/update/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"brands",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/brands/delete/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"brands",
+								"delete",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/brands/get",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"brands",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/brands/getById/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"brands",
+								"getById",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tallas",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Hola",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/sizes/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"sizes",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/sizes/update/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"sizes",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/sizes/delete/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"sizes",
+								"delete",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/sizes/get",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"sizes",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/sizes/getById/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"sizes",
+								"getById",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Zapatos",
+			"item": [
+				{
+					"name": "Crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/shoes/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"shoes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/v1/shoes/test",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"shoes",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getShoes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/v1/shoes/getShoes",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"shoes",
+						"getShoes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createSize",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/v1/shoes/createSize",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"shoes",
+						"createSize"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

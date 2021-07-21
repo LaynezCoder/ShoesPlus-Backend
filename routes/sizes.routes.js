@@ -11,7 +11,7 @@ const router = Router();
 
 router.post('/create', [
     check('name', 'This name is required').not().isEmpty(),
-    check('name', 'This needs to be a size number!').not().isNumeric(),
+    check('name', 'This needs to be a size number!').isNumeric(),
     check('name').custom(isExistsSize),
     validateFields,
 ], createSize);
@@ -20,7 +20,7 @@ router.put('/update/:id', [
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsSizeById),
     check('name', 'This name is required').not().isEmpty(),
-    check('name', 'This needs to be a size number!').not().isNumeric(),
+    check('name', 'This needs to be a size number!').isNumeric(),
     check('name').custom(isExistsSize),
     validateFields
 ], updateSize)

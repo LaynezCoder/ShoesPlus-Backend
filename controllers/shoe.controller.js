@@ -1,6 +1,6 @@
-const Shoe = require('../models/shoe.model')
-const Size = require('../models/size.model')
+const { Shoe, Category, Size } = require('../models')
 
+/* FOR TEST
 const test = async(req, res) => {
     const data = {
         barcode: 023203,
@@ -36,10 +36,21 @@ const createSize = async(req, res) => {
 
     await size.save();
     res.send({ size })
+} */
+
+const createShoe = async (req, res) => {
+    const { idCol, idCat } = req.params;
+    const { barcode, name, description, price, sizes } = req.body;
+    const shoe = new Shoe({ barcode, name: name.toLowerCase(), description, price, collection_shoe: idCol, category: idCat, sizes });
+
+    await shoe.save();
+
+    res.send({ ok: true, message: `Shoe ${shoe.name} saved`, shoe });
 }
 
+
+
+
 module.exports = {
-    test,
-    getShoes,
-    createSize,
+    createShoe
 }
