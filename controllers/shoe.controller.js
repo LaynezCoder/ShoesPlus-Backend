@@ -38,7 +38,7 @@ const createSize = async(req, res) => {
     res.send({ size })
 } */
 
-const createShoe = async (req, res) => {
+const createShoe = async(req, res) => {
     const { idCol, idCat } = req.params;
     const { barcode, name, description, price, sizes } = req.body;
     const shoe = new Shoe({ barcode, name: name.toLowerCase(), description, price, collection_shoe: idCol, category: idCat, sizes });
