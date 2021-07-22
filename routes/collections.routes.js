@@ -37,9 +37,14 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteCollection)
 
-router.get('/get', getCollections)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getCollections)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCollectionById),
     validateFields

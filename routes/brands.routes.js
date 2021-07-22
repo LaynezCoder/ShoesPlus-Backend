@@ -35,9 +35,14 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteBrand)
 
-router.get('/get', getBrands)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getBrands)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsBrandById),
     validateFields

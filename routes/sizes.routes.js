@@ -37,9 +37,14 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteSize)
 
-router.get('/get', getSizes)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getSizes)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsSizeById),
     validateFields
