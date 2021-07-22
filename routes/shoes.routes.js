@@ -10,6 +10,8 @@ const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById } = require('.
 const router = Router();
 
 router.post('/create/:idCat/:idCol', [
+    validateJWT,
+    isAdmin,
     check('sizes', 'This sizes is required').isArray(),
     check('name', 'This name is required').not().isEmpty(),
     check('barcode', 'This needs to be a barcode number!').isNumeric(),
@@ -28,6 +30,8 @@ router.post('/create/:idCat/:idCol', [
 ], createShoe);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
     check('name', 'This name is required').not().isEmpty(),
@@ -40,6 +44,8 @@ router.put('/update/:id', [
 ], updateShoe)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
     validateFields

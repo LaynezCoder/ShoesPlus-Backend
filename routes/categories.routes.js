@@ -19,6 +19,8 @@ router.post('/create', [
 ], createCategory);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCategoryById),
     check('name', 'This name is required').not().isEmpty(),
@@ -28,6 +30,8 @@ router.put('/update/:id', [
 ], updateCategory)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCategoryById),
     validateFields

@@ -10,12 +10,16 @@ const { createBrand, updateBrand, deleteBrand, getBrands, getBrandById } = requi
 const router = Router();
 
 router.post('/create', [
+    validateJWT,
+    isAdmin,
     check('name', 'This name is required').not().isEmpty(),
     check('name').custom(isExistsBrand),
     validateFields,
 ], createBrand);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsBrandById),
     check('name', 'This name is required').not().isEmpty(),
@@ -24,6 +28,8 @@ router.put('/update/:id', [
 ], updateBrand)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsBrandById),
     validateFields
