@@ -71,7 +71,7 @@ const OrderSchema = Schema({
     },
     status: {
         type: String,
-        default: true,
+        default: 'ON_HOLD',
         enum: ['CANCEL', 'ON_HOLD', 'SUCCESS']
     },
     reason: {
@@ -80,8 +80,19 @@ const OrderSchema = Schema({
     },
     items: [{
         type: Schema.Types.ObjectId,
-        ref: 'item_detail'
-    }]
+        ref: 'item_detail',
+        required: [
+            true,
+            'The items is required'
+        ]
+    }],
+    total: {
+        type: Number,
+        required: [
+            true,
+            'The total is required'
+        ]
+    }
 })
 
 module.exports = model('order', OrderSchema);

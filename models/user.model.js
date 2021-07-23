@@ -50,6 +50,10 @@ const UserSchema = Schema({
         type: Boolean,
         default: true
     },
+    orders: [{
+        type: Schema.Types.ObjectId,
+        ref: 'order'
+    }],
     buyout: [{
         type: Schema.Types.ObjectId,
         ref: 'brand'
