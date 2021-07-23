@@ -1,6 +1,9 @@
-const { Order, ItemDetail, Shoe } = require('../models');
+const { Order, ItemDetail, Shoe, User, SizeDetail } = require('../models');
+const { mergeItems } = require('../helpers');
 
 const createOrder = async(req, res) => {
+    const { id } = req.user;
+
     const { firstname, lastname, phone, nit, address, reference_address, city, region, zip, express, reason, items } = req.body;
 
     const itemDetails = await ItemDetail.insertMany(items);
@@ -12,6 +15,10 @@ const createOrder = async(req, res) => {
     const order = new Order(data);
 
     await order.save();
+
+    await User.findByIdAndUpdate(id, { $push: { orders: order.id } }, { new: true });
+
+    await discountShoes(items)
 
     res.send({ ok: true, message: `Order successfully created, order id: ${order.id}`, order });
 }
@@ -30,30 +37,17 @@ const getAmount = async(items = [], express) => {
     return total;
 }
 
-const findTest = async(req, res) => {
-    const cart = [{
-        shoe: '60f88b1d0ce2212c7c6be7ee',
-        size: '60f88afb0ce2212c7c6be7e7',
-        quantity: 15
-    }]
+const discountShoes = async(items = []) => {
+    const result = mergeItems(items);
 
-    const find = await ItemDetail.find({ $or: cart });
+    for (let i = 0; i < result.length; i++) {
+        const id = result[i].size_detail;
+        const substract = result[i].quantity;
 
-    res.send({ find })
+        const sizeDetail = await SizeDetail.findByIdAndUpdate(id, { $inc: { quantity: -substract } }, { new: true });
+    }
 }
-
-const test = (req, res) => {
-    const one = [{ id: 1, quantity: 6 }, { id: 2, quantity: 5 }, { id: 3, quantity: 1 }]
-    const two = [{ id: 1, quantity: 6 }, { id: 2, quantity: 5 }, { id: 3, quantity: 1 }]
-
-    console.log('Comparing', JSON.stringify(one) === JSON.stringify(two));
-
-    res.send({ ok: true });
-}
-
 
 module.exports = {
     createOrder,
-    test,
-    findTest
 }

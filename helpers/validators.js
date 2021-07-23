@@ -151,12 +151,21 @@ const validateItems = async(items = []) => {
     const sizeDetails = await SizeDetail.find({ _id: { $in: ids } });
 
     for (let i = 0; i < sizeDetails.length; i++) {
+        if (result[i].quantity <= 0) {
+            throw new Error(`The quantity cannot be zero`);
+        }
+
+        if (sizeDetails[i].quantity === 0) {
+            const { name } = await Shoe.findById(result[i].shoe);
+            throw new Error(`There is not enough stock for the product: ${name}`);
+        }
+
         if (result[i].quantity > sizeDetails[i].quantity) {
             const [{ name }, { size }] = await Promise.all([
                 Shoe.findById(result[i].shoe).populate('collection_shoe'),
                 SizeDetail.findById(result[i].size_detail).populate('size')
             ])
-            throw new Error(`The price of the  ${name} - ${size.name} shoe is bigger than the stock`);
+            throw new Error(`The quantity of the  ${name} shoe with size ${size.name} is bigger than the stock`);
         }
     }
 
@@ -197,5 +206,6 @@ module.exports = {
     validateQuantity,
     isExistsBarcode,
     isExistSizes,
-    validateItems
+    validateItems,
+    mergeItems
 }

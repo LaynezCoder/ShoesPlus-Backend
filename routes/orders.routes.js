@@ -5,7 +5,7 @@ const { validateItems, validateQuantity } = require('../helpers/validators');
 
 const { validateFields, validateJWT, withRole } = require('../middlewares')
 
-const { createOrder, test, findTest } = require('../controllers/order.controller');
+const { createOrder } = require('../controllers/order.controller');
 
 const router = Router();
 
@@ -26,9 +26,5 @@ router.post('/createOrder', [
     check('items').custom(validateItems),
     validateFields
 ], createOrder);
-
-router.get('/test', test);
-
-router.get('/findTest', findTest);
 
 module.exports = router;
