@@ -16,7 +16,7 @@ const createOrder = async(req, res) => {
 
     await order.save();
 
-    await User.findByIdAndUpdate(id, { $push: { orders: order.id } }, { new: true });
+    await User.findByIdAndUpdate(id, { $push: { orders: order.id } });
 
     await discountShoes(items)
 
@@ -42,12 +42,46 @@ const discountShoes = async(items = []) => {
 
     for (let i = 0; i < result.length; i++) {
         const id = result[i].size_detail;
-        const substract = result[i].quantity;
+        const subtract = result[i].quantity;
 
-        await SizeDetail.findByIdAndUpdate(id, { $inc: { quantity: -substract } }, { new: true });
+        await SizeDetail.findByIdAndUpdate(id, { $inc: { quantity: -subtract } });
     }
+}
+
+const cancelOrder = async(req, res) => {
+    const { id: idUser } = req.user;
+    const { id: idOrder } = req.params;
+
+    const { id, status } = await Order.findById(idOrder);
+    if (status === 'CANCEL') {
+        return res.status(400).send({ message: `The order with id ${id} has already been canceled previously` })
+    }
+
+    await returnShoes(idOrder);
+
+    const order = await Order.findByIdAndUpdate(idOrder, { status: 'CANCEL' });
+
+    await User.findByIdAndUpdate(idUser, { $pull: { orders: order.id } });
+
+    res.send({ ok: true, message: `The order with id ${order.id} has been canceled` })
+}
+
+const returnShoes = async(idOrder) => {
+    const { items } = await Order.findById(idOrder).populate('items');
+
+    for (let i = 0; i < items.length; i++) {
+        const id = items[i].size_detail;
+        const add = items[i].quantity;
+
+        await SizeDetail.findByIdAndUpdate(id, { $inc: { quantity: +add } });
+    }
+}
+
+const getOrders = async(req, res) => {
+
 }
 
 module.exports = {
     createOrder,
+    cancelOrder
 }
