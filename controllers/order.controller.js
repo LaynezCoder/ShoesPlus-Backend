@@ -53,6 +53,11 @@ const cancelOrder = async(req, res) => {
     const { id: idOrder } = req.params;
 
     const { id, status } = await Order.findById(idOrder);
+
+    if (status === 'SUCCESS') {
+        return res.status(400).send({ message: `The order with id ${id} has already been completed` })
+    }
+
     if (status === 'CANCEL') {
         return res.status(400).send({ message: `The order with id ${id} has already been canceled previously` })
     }
@@ -77,11 +82,43 @@ const returnShoes = async(idOrder) => {
     }
 }
 
-const getOrders = async(req, res) => {
+const deliverOrder = async(req, res) => {
+    const { id } = req.params;
 
+    const { status } = await Order.findById(id);
+
+    if (status === 'SUCCESS') {
+        return res.status(400).send({ message: `The order with id ${id} has already been completed` })
+    }
+
+    if (status === 'CANCEL') {
+        return res.status(400).send({ message: `The order with id ${id} could not be completed` })
+    }
+
+    await Order.findByIdAndUpdate(id, { status: 'SUCCESS' })
+    res.send({ ok: true, message: `The order with id ${id} has been delivered successfully` })
+}
+
+const getCompletedOrders = async(req, res) => {
+    const orders = await Order.find({ status: 'SUCCESS' });
+    res.send({ ok: true, total: orders.length, orders })
+}
+
+const getOnHoldOrders = async(req, res) => {
+    const orders = await Order.find({ status: 'ON_HOLD' });
+    res.send({ ok: true, total: orders.length, orders })
+}
+
+const getCanceledOrders = async(req, res) => {
+    const orders = await Order.find({ status: 'CANCEL' });
+    res.send({ ok: true, total: orders.length, orders })
 }
 
 module.exports = {
     createOrder,
-    cancelOrder
+    cancelOrder,
+    deliverOrder,
+    getCompletedOrders,
+    getOnHoldOrders,
+    getCanceledOrders
 }

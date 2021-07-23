@@ -5,7 +5,7 @@ const { validateItems, validateQuantity } = require('../helpers/validators');
 
 const { validateFields, validateJWT, withRole } = require('../middlewares')
 
-const { createOrder, cancelOrder } = require('../controllers/order.controller');
+const { createOrder, cancelOrder, deliverOrder, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
 
 const router = Router();
 
@@ -29,11 +29,38 @@ router.post('/createOrder', [
 
 /**
  * Change role with: DELIVERY_MAN role
- * If order exits and is mongo id valid
+ * Check if the order exists and is valid mongodb
  */
 router.put('/cancelOrder/:id', [
     validateJWT,
     withRole('USER')
 ], cancelOrder);
+
+/**
+ * Change role with: DELIVERY_MAN role
+ * Check if the order exists and is valid mongodb if  
+ */
+router.put('/deliverOrder/:id', [
+    validateJWT,
+    withRole('USER')
+], deliverOrder);
+
+router.get('/getCompletedOrders', [
+    validateJWT,
+    withRole('ADMIN')
+], getCompletedOrders);
+
+/**
+ * Add role: DELIVERY_MAN
+ */
+router.get('/getOnHoldOrders', [
+    validateJWT,
+    withRole('ADMIN')
+], getOnHoldOrders);
+
+router.get('/getCanceledOrders', [
+    validateJWT,
+    withRole('ADMIN')
+], getCanceledOrders);
 
 module.exports = router;
