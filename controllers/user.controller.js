@@ -66,7 +66,7 @@ const updateProfile = async(req, res) => {
 
     const { firstname, lastname, username, password, email } = req.body;
 
-    const find = await User.findOne({ username });
+    const find = await User.findOne({ username: trim(username) });
 
     if (find) {
         if (id != find.id) {
