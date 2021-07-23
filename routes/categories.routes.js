@@ -19,23 +19,31 @@ router.post('/create', [
 ], createCategory);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCategoryById),
     check('name', 'This name is required').not().isEmpty(),
     check('description', 'This description is required').not().isEmpty(),
-    check('name').custom(isExistsCategory),
     validateFields
 ], updateCategory)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCategoryById),
     validateFields
 ], deleteCategory)
 
-router.get('/get', getCategories)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getCategories)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCategoryById),
     validateFields

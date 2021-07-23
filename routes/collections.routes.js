@@ -10,6 +10,8 @@ const { createCollection, updateCollection, deleteCollection, getCollections, ge
 const router = Router();
 
 router.post('/create/:id', [
+    validateJWT,
+    isAdmin,
     check('name', 'This name is required').not().isEmpty(),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsBrandById),
@@ -18,22 +20,30 @@ router.post('/create/:id', [
 ], createCollection);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCollectionById),
     check('name', 'This name is required').not().isEmpty(),
-    check('name').custom(isExistsCollection),
     validateFields
 ], updateCollection)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCollectionById),
     validateFields
 ], deleteCollection)
 
-router.get('/get', getCollections)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getCollections)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCollectionById),
     validateFields

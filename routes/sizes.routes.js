@@ -10,6 +10,8 @@ const { createSize, updateSize, deleteSize, getSizes, getSizeById } = require('.
 const router = Router();
 
 router.post('/create', [
+    validateJWT,
+    isAdmin,
     check('name', 'This name is required').not().isEmpty(),
     check('name', 'This needs to be a size number!').isNumeric(),
     check('name').custom(isExistsSize),
@@ -17,6 +19,8 @@ router.post('/create', [
 ], createSize);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsSizeById),
     check('name', 'This name is required').not().isEmpty(),
@@ -26,14 +30,21 @@ router.put('/update/:id', [
 ], updateSize)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsSizeById),
     validateFields
 ], deleteSize)
 
-router.get('/get', getSizes)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getSizes)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsSizeById),
     validateFields

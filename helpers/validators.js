@@ -5,7 +5,7 @@ const { User, Category, Brand, Size, Collection, Shoe, SizeDetail, ItemDetail } 
 const { trim } = require('./string-utils');
 
 const isExistsCategory = async(name) => {
-    const isExistsCategory = await Category.findOne({ name: name.toLowerCase() });
+    const isExistsCategory = await Category.findOne({ name: trim(name) });
     if (isExistsCategory) {
         throw new Error(`This ${isExistsCategory.name} already exists`);
     }
@@ -25,7 +25,7 @@ const isExistsUsername = async(username) => {
     }
 }
 const isExistsBrand = async(name) => {
-    const isExistsBrand = await Brand.findOne({ name: name.toLowerCase() });
+    const isExistsBrand = await Brand.findOne({ name: trim(name) });
     if (isExistsBrand) {
         throw new Error(`This ${isExistsBrand.name} already exists`);
     }
@@ -39,7 +39,7 @@ const isExistsBrandById = async(id) => {
 }
 
 const isExistsSize = async(name) => {
-    const isExistsSize = await Size.findOne({ name: name.toLowerCase() });
+    const isExistsSize = await Size.findOne({ name: trim(name) });
     if (isExistsSize) {
         throw new Error(`This ${isExistsSize.name} already exists`);
     }
@@ -53,7 +53,7 @@ const isExistsSizeById = async(id) => {
 }
 
 const isExistsCollection = async(name) => {
-    const isExistsCollection = await Collection.findOne({ name: name.toLowerCase() });
+    const isExistsCollection = await Collection.findOne({ name: trim(name) });
     if (isExistsCollection) {
         throw new Error(`This ${isExistsCollection.name} already exists`);
     }
@@ -75,7 +75,7 @@ const isExistsUserById = async(id) => {
 }
 
 const isExistsShoe = async(name) => {
-    const isExistsShoe = await Shoe.findOne({ name: name.toLowerCase() });
+    const isExistsShoe = await Shoe.findOne({ name: trim(name) });
     if (isExistsShoe) {
         throw new Error(`This ${isExistsShoe.name} already exists`);
     }
@@ -128,6 +128,14 @@ const isExistSizes = async(sizes = []) => {
     }
 
     throw new Error('Some sizes were not found');
+}
+
+const validateManyIds = (sizes) => {
+    sizes.forEach(size => {
+        if (!ObjectId.isValid(size)) {
+            throw new Error(`This size ${size} is not valid`);
+        }
+    })
 }
 
 const validateItems = async(items = []) => {
@@ -206,6 +214,7 @@ module.exports = {
     validateQuantity,
     isExistsBarcode,
     isExistSizes,
+    validateManyIds,
     validateItems,
     mergeItems
 }

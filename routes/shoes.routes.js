@@ -1,15 +1,17 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExistsShoe, isExistsBarcode, isExistsShoeById, validateIds, validateQuantity, isExistSizes } = require('../helpers/validators');
+const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExistsShoe, isExistsBarcode, isExistsShoeById, validateIds, validateQuantity, isExistSizes, validateManyIds } = require('../helpers/validators');
 
 const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById } = require('../controllers/shoe.controller')
+const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById, deleteSizes, sale, updateImageShoe } = require('../controllers/shoe.controller')
 
 const router = Router();
 
 router.post('/create/:idCat/:idCol', [
+    validateJWT,
+    isAdmin,
     check('sizes', 'This sizes is required').isArray(),
     check('name', 'This name is required').not().isEmpty(),
     check('barcode', 'This needs to be a barcode number!').isNumeric(),
@@ -28,33 +30,66 @@ router.post('/create/:idCat/:idCol', [
 ], createShoe);
 
 router.put('/update/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
     check('name', 'This name is required').not().isEmpty(),
     check('barcode', 'This needs to be a barcode number!').isNumeric(),
     check('description', 'This description is required').not().isEmpty(),
     check('price', 'This needs to be a price!').isNumeric(),
-    check('name').custom(isExistsShoe),
     check('barcode').custom(isExistsBarcode),
     validateFields
 ], updateShoe)
 
 router.delete('/delete/:id', [
+    validateJWT,
+    isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
     validateFields
 ], deleteShoe)
 
-router.get('/get', getShoes)
+router.get('/get', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
+], getShoes)
 
 router.get('/getById/:id', [
+    validateJWT,
+    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
     validateFields
 ], getShoeById)
 
+router.delete('/deleteSizes/:id', [
+    validateJWT,
+    isAdmin,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('sizes').custom(validateManyIds),
+    validateFields
+], deleteSizes)
 
+router.put('/sale/:id', [
+    validateJWT,
+    isAdmin,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('new_price', 'The new price is required!').isNumeric(),
+    validateFields
+], sale)
 
+router.put('/saveImages/:id', [
+    validateJWT,
+    isAdmin,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('images', 'The images is required').isArray(),
+    check('images', 'The images is required').isArray().not().isEmpty(),
+    validateFields,
+], updateImageShoe)
 
 
 
