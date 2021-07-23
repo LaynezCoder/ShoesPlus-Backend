@@ -44,7 +44,7 @@ const discountShoes = async(items = []) => {
         const id = result[i].size_detail;
         const substract = result[i].quantity;
 
-        const sizeDetail = await SizeDetail.findByIdAndUpdate(id, { $inc: { quantity: -substract } }, { new: true });
+        await SizeDetail.findByIdAndUpdate(id, { $inc: { quantity: -substract } }, { new: true });
     }
 }
 
