@@ -1,11 +1,11 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExistsShoe, isExistsBarcode, isExistsShoeById, validateIds, validateQuantity, isExistSizes } = require('../helpers/validators');
+const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExistsShoe, isExistsBarcode, isExistsShoeById, validateIds, validateQuantity, isExistSizes, validateManyIds } = require('../helpers/validators');
 
 const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById } = require('../controllers/shoe.controller')
+const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById, deleteSizes } = require('../controllers/shoe.controller')
 
 const router = Router();
 
@@ -64,7 +64,14 @@ router.get('/getById/:id', [
     validateFields
 ], getShoeById)
 
-
+router.delete('/deleteSizes/:id', [
+    validateJWT,
+    isAdmin,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('sizes').custom(validateManyIds),
+    validateFields
+], deleteSizes)
 
 
 

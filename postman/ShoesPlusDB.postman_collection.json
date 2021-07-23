@@ -12,13 +12,19 @@
 					"name": "Crear",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjYwOTJkZjY0NzAwMzE1MGJlMDZlNCIsImlhdCI6MTYyNjg5MzIxNywiZXhwIjoxNjI2OTA3NjE3fQ.061d2vHyaHEEaeSEgc7da7C6pKHnhvvT3w_zFkmiCek",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Shoes 123",
+									"value": "Shoes 1234",
 									"type": "text"
 								},
 								{
@@ -52,18 +58,18 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Sneakers OA",
+									"value": "Sneakers OAA",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "Sneakers 1233",
+									"value": "Sneakers 12337894",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/v1/categories/update/60f358d663ceb83564bc09dc",
+							"raw": "{{url}}/v1/categories/update/60f86bb62875a8274c6f2038",
 							"host": [
 								"{{url}}"
 							],
@@ -71,7 +77,7 @@
 								"v1",
 								"categories",
 								"update",
-								"60f358d663ceb83564bc09dc"
+								"60f86bb62875a8274c6f2038"
 							]
 						}
 					},
@@ -158,13 +164,13 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Jordans",
+									"value": "ZXT",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/v1/collections/create/60f81f63f158ba2d10d89950",
+							"raw": "{{url}}/v1/collections/create/60f84f645a331638ac6649dd",
 							"host": [
 								"{{url}}"
 							],
@@ -172,7 +178,7 @@
 								"v1",
 								"collections",
 								"create",
-								"60f81f63f158ba2d10d89950"
+								"60f84f645a331638ac6649dd"
 							]
 						}
 					},
@@ -272,7 +278,7 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Adidas",
+									"value": "Nike",
 									"type": "text"
 								}
 							]
@@ -379,13 +385,19 @@
 					"name": "Crear",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjYwOTJkZjY0NzAwMzE1MGJlMDZlNCIsImlhdCI6MTYyNjk5MTE2NywiZXhwIjoxNjI3MDA1NTY3fQ.MjdNwS502OlpVJ_QzEzygfEkDMvR2frykmIPpa9id3M",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Hola",
+									"value": "6",
 									"type": "text"
 								}
 							]
@@ -492,16 +504,33 @@
 					"name": "Crear",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjYwOTJkZjY0NzAwMzE1MGJlMDZlNCIsImlhdCI6MTYyNjk5MTE2NywiZXhwIjoxNjI3MDA1NTY3fQ.MjdNwS502OlpVJ_QzEzygfEkDMvR2frykmIPpa9id3M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Zapato 25\",\r\n    \"description\": \"Zapato test 25\",\r\n    \"barcode\": 4447445,\r\n    \"price\": 500,\r\n    \"sizes\": [\r\n        {\r\n            \"size\": \"60fa02d0ea8cf625381757e3\",\r\n            \"color\": \"blue\",\r\n            \"quantity\": 8\r\n        },\r\n        {\r\n            \"size\": \"60fa02cbea8cf625381757df\",\r\n            \"color\": \"red\",\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/v1/shoes/",
+							"raw": "{{url}}/v1/shoes/create/60f35fd709513737108bdcb5/60f84f7e5a331638ac6649e1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"v1",
 								"shoes",
-								""
+								"create",
+								"60f35fd709513737108bdcb5",
+								"60f84f7e5a331638ac6649e1"
 							]
 						}
 					},
@@ -540,6 +569,41 @@
 						"method": "GET",
 						"header": [],
 						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSizes",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjYwOTJkZjY0NzAwMzE1MGJlMDZlNCIsImlhdCI6MTYyNjk5MTE2NywiZXhwIjoxNjI3MDA1NTY3fQ.MjdNwS502OlpVJ_QzEzygfEkDMvR2frykmIPpa9id3M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"sizes\" : [ \r\n        \"60fa0db1d9f632354c46badd\",\r\n        \"60fa0db1d9f632354c46bade\"\r\n]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/shoes/deleteSizes/60fa0db1d9f632354c46bae0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"shoes",
+								"deleteSizes",
+								"60fa0db1d9f632354c46bae0"
+							]
+						}
 					},
 					"response": []
 				}

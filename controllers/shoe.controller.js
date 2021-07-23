@@ -46,10 +46,22 @@ const getShoeById = async (req, res) => {
     res.send({ ok: true, shoe })
 }
 
+const deleteSizes = async (req, res) => {
+    const { id } = req.params;
+    const { sizes } = req.body;
+    console.log(sizes);
+    const sizedetails = await SizeDetail.deleteMany({ _id: { $in: sizes } })
+
+    const sizesdeleted = await Shoe.findByIdAndUpdate(id, { $pull: { sizes: { $in: sizes } } })
+
+    res.send({ ok: true, message: `Sizes  deleted`, sizesdeleted });
+}
+
 module.exports = {
     createShoe,
     updateShoe,
     deleteShoe,
     getShoes,
-    getShoeById
+    getShoeById,
+    deleteSizes
 }
