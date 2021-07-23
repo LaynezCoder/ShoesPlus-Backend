@@ -28,21 +28,19 @@ router.post('/createOrder', [
 ], createOrder);
 
 /**
- * Change role with: DELIVERY_MAN role
  * Check if the order exists and is valid mongodb
  */
 router.put('/cancelOrder/:id', [
     validateJWT,
-    withRole('USER')
+    withRole('DELIVERY_MAN')
 ], cancelOrder);
 
 /**
- * Change role with: DELIVERY_MAN role
  * Check if the order exists and is valid mongodb if  
  */
 router.put('/deliverOrder/:id', [
     validateJWT,
-    withRole('USER')
+    withRole('DELIVERY_MAN')
 ], deliverOrder);
 
 router.get('/getCompletedOrders', [
@@ -50,12 +48,9 @@ router.get('/getCompletedOrders', [
     withRole('ADMIN')
 ], getCompletedOrders);
 
-/**
- * Add role: DELIVERY_MAN
- */
 router.get('/getOnHoldOrders', [
     validateJWT,
-    withRole('ADMIN')
+    withRole('ADMIN', 'DELIVERY_MAN')
 ], getOnHoldOrders);
 
 router.get('/getCanceledOrders', [

@@ -5,7 +5,7 @@ const { isExistsUsername, isExistsUserById } = require('../helpers/validators');
 
 const { validateFields, validateJWT, withRole } = require('../middlewares')
 
-const { signUp, login, updateProfile, deleteProfile, infoProfile, deleteUser, updateUser } = require('../controllers/user.controller');
+const { signUp, login, updateProfile, deleteProfile, infoProfile, deleteUser, updateUser, createDeliveryMan } = require('../controllers/user.controller');
 
 const router = Router();
 
@@ -24,6 +24,18 @@ router.post('/login', [
     check('password', 'Password is required').not().isEmpty(),
     validateFields
 ], login);
+
+router.post('/createDeliveryMan', [
+    validateJWT,
+    withRole('ADMIN'),
+    check('firstname', 'Firstname is required').not().isEmpty(),
+    check('lastname', 'Lastname is required').not().isEmpty(),
+    check('username', 'Username is required').not().isEmpty(),
+    check('password', 'Password must be greater than 6 characters').isLength({ min: 6 }),
+    check('email', 'Email is required').isEmail(),
+    check('username').custom(isExistsUsername),
+    validateFields
+], createDeliveryMan)
 
 router.put('/updateProfile', [
     validateJWT,

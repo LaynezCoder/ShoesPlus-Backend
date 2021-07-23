@@ -88,6 +88,10 @@ const deleteProfile = async(req, res) => {
 
     const find = await User.findById(id);
 
+    if (find.role === 'DELIVERY_MAN') {
+        return res.status(400).send({ message: 'You can not do this' })
+    }
+
     if (find.role === 'ADMIN') {
         return res.status(400).send({ message: 'You can not do this' })
     }
@@ -135,6 +139,10 @@ const updateUser = async(req, res) => {
         return res.status(400).send({ messages: 'I cant update yourself' })
     }
 
+    if (find.role === 'DELIVERY_MAN') {
+        return res.status(400).send({ messages: 'You cannot update this type of user' })
+    }
+
     if (find.role === 'ADMIN' && role !== 'ADMIN') {
         return res.status(400).send({ messages: 'You cannot upgrade to administrator type user' })
     }
@@ -142,6 +150,19 @@ const updateUser = async(req, res) => {
     const user = await User.findByIdAndUpdate(id, { role: role.toUpperCase() }, { new: true });
 
     res.send({ ok: true, message: `User ${user.username} updated`, user })
+}
+
+const createDeliveryMan = async(req, res) => {
+    const { firstname, lastname, username, password, email } = req.body;
+
+    const user = new User({ firstname, lastname, username: trim(username), password, email, role: 'DELIVERY_MAN' });
+
+    const salt = bcryptjs.genSaltSync(10);
+    user.password = bcryptjs.hashSync(password, salt);
+
+    await user.save();
+
+    res.send({ ok: true, message: `Delivery man ${user.username} saved`, user });
 }
 
 module.exports = {
@@ -152,5 +173,6 @@ module.exports = {
     deleteProfile,
     infoProfile,
     deleteUser,
-    updateUser
+    updateUser,
+    createDeliveryMan
 }
