@@ -1,9 +1,10 @@
+const { trim } = require('../helpers')
 const { Collection, Brand } = require('../models')
 
 const createCollection = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
-    const collection = new Collection({ name: name.toLowerCase(), brand: id });
+    const collection = new Collection({ name: trim(name), brand: id });
 
     await collection.save();
 
@@ -14,7 +15,15 @@ const updateCollection = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
 
-    const collection = await Collection.findByIdAndUpdate(id, { name: name.toLowerCase() }, { new: true });
+    const find = await Collection.findOne({ name: trim(name) });
+
+    if (find) {
+        if (id != find._id) {
+            return res.status(400).send({ message: `This name ${name} is already used` })
+        }
+    }
+
+    const collection = await Collection.findByIdAndUpdate(id, { name: trim(name) }, { new: true });
 
     res.send({ ok: true, message: `Collection ${collection.name} updated`, collection });
 }

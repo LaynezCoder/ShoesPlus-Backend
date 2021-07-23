@@ -1,3 +1,4 @@
+const { trim } = require('../helpers')
 const { Shoe, Category, Size, SizeDetail } = require('../models')
 
 const createShoe = async (req, res) => {
@@ -9,7 +10,7 @@ const createShoe = async (req, res) => {
 
     const ids = sizedetails.map(s => s._id);
 
-    const shoe = new Shoe({ barcode, name: name.toLowerCase(), description, price, collection_shoe: idCol, category: idCat, sizes: ids });
+    const shoe = new Shoe({ barcode, name: trim(name), description, price, collection_shoe: idCol, category: idCat, sizes: ids });
 
     await shoe.save();
 
@@ -20,7 +21,15 @@ const updateShoe = async (req, res) => {
     const { id } = req.params;
     const { barcode, name, description, price } = req.body;
 
-    const shoe = await Shoe.findByIdAndUpdate(id, { name: name.toLowerCase(), barcode, description, price }, { new: true });
+    const find = await Shoe.findOne({ name: trim(name) });
+
+    if (find) {
+        if (id != find._id) {
+            return res.status(400).send({ message: `This name ${name} is already used` })
+        }
+    }
+
+    const shoe = await Shoe.findByIdAndUpdate(id, { name: trim(name), barcode, description, price }, { new: true });
 
     res.send({ ok: true, message: `Shoe ${shoe.name} updated`, shoe });
 }
@@ -57,11 +66,37 @@ const deleteSizes = async (req, res) => {
     res.send({ ok: true, message: `Sizes  deleted`, sizesdeleted });
 }
 
+const sale = async (req, res) => {
+    const { id } = req.params;
+    const { new_price } = req.body;
+
+    const { price } = await Shoe.findById(id);
+
+    if (new_price > price) {
+        return res.status(400).send({ message: 'The new price is higher than the original price!' })
+    }
+
+    const { name } = await Shoe.findByIdAndUpdate(id, { new_price, sale: true }, { new: true })
+
+    res.send({ ok: true, message: `This ${name} is now in sale!` })
+}
+
+const updateImageShoe = async (req, res) => {
+    const { id } = req.params;
+    const { images } = req.body;
+
+    const shoe = await Shoe.findByIdAndUpdate(id, { images }, { new: true })
+
+    res.send({ ok: true, message: 'The images were added' })
+}
+
 module.exports = {
     createShoe,
     updateShoe,
     deleteShoe,
     getShoes,
     getShoeById,
-    deleteSizes
+    deleteSizes,
+    sale,
+    updateImageShoe
 }

@@ -5,7 +5,7 @@ const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExists
 
 const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById, deleteSizes } = require('../controllers/shoe.controller')
+const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById, deleteSizes, sale, updateImageShoe } = require('../controllers/shoe.controller')
 
 const router = Router();
 
@@ -38,7 +38,6 @@ router.put('/update/:id', [
     check('barcode', 'This needs to be a barcode number!').isNumeric(),
     check('description', 'This description is required').not().isEmpty(),
     check('price', 'This needs to be a price!').isNumeric(),
-    check('name').custom(isExistsShoe),
     check('barcode').custom(isExistsBarcode),
     validateFields
 ], updateShoe)
@@ -73,6 +72,24 @@ router.delete('/deleteSizes/:id', [
     validateFields
 ], deleteSizes)
 
+router.put('/sale/:id', [
+    validateJWT,
+    isAdmin,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('new_price', 'The new price is required!').isNumeric(),
+    validateFields
+], sale)
+
+router.put('/saveImages/:id', [
+    validateJWT,
+    isAdmin,
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsShoeById),
+    check('images', 'The images is required').isArray(),
+    check('images', 'The images is required').isArray().not().isEmpty(),
+    validateFields,
+], updateImageShoe)
 
 
 

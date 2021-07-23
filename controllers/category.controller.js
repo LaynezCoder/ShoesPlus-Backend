@@ -1,8 +1,9 @@
+const { trim } = require('../helpers')
 const { Category } = require('../models')
 
 const createCategory = async (req, res) => {
     const { name, description } = req.body;
-    const category = new Category({ name: name.toLowerCase(), description });
+    const category = new Category({ name: trim(name), description });
 
     await category.save();
 
@@ -13,7 +14,15 @@ const updateCategory = async (req, res) => {
     const { id } = req.params;
     const { name, description } = req.body;
 
-    const category = await Category.findByIdAndUpdate(id, { name: name.toLowerCase(), description }, { new: true });
+    const find = await Category.findOne({ name: trim(name) });
+
+    if (find) {
+        if (id != find._id) {
+            return res.status(400).send({ message: `This name ${name} is already used` })
+        }
+    }
+
+    const category = await Category.findByIdAndUpdate(id, { name: trim(name), description }, { new: true });
 
     res.send({ ok: true, message: `Category ${category.name} updated`, category });
 }

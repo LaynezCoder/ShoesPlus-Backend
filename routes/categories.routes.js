@@ -25,7 +25,6 @@ router.put('/update/:id', [
     check('id').custom(isExistsCategoryById),
     check('name', 'This name is required').not().isEmpty(),
     check('description', 'This description is required').not().isEmpty(),
-    check('name').custom(isExistsCategory),
     validateFields
 ], updateCategory)
 

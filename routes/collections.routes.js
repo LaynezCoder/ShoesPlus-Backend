@@ -25,7 +25,6 @@ router.put('/update/:id', [
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsCollectionById),
     check('name', 'This name is required').not().isEmpty(),
-    check('name').custom(isExistsCollection),
     validateFields
 ], updateCollection)
 
