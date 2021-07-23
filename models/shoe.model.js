@@ -65,16 +65,14 @@ const ShoeSchema = Schema({
             'The category is required'
         ]
     },
-    sizes: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'size_detail',
-            required: [
-                true,
-                'The size_detail is required'
-            ]
-        }
-    ]
+    sizes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'size_detail',
+        required: [
+            true,
+            'The size_detail is required'
+        ]
+    }]
 })
 
 module.exports = model('shoe', ShoeSchema)

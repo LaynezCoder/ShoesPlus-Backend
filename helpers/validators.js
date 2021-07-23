@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongoose').Types;
 
-const { User, Category, Brand, Size, Collection, Shoe } = require('../models');
+const { User, Category, Brand, Size, Collection, Shoe, SizeDetail, ItemDetail } = require('../models');
 
 const { trim } = require('./string-utils');
 
@@ -130,6 +130,56 @@ const isExistSizes = async(sizes = []) => {
     throw new Error('Some sizes were not found');
 }
 
+const validateItems = async(items = []) => {
+    let result = mergeItems(items);
+
+    for (let item of result) {
+        const findShoe = await Shoe.findById(item.shoe);
+        if (!findShoe) {
+            throw new Error(`The shoe with id ${item.shoe} doesn't exists`);
+        }
+    }
+
+    for (let item of result) {
+        const findSize = await SizeDetail.findById(item.size_detail);
+        if (!findSize) {
+            throw new Error(`The size with id ${item.size_detail} doesn't exists`);
+        }
+    }
+
+    const ids = result.map(items => items.size_detail);
+    const sizeDetails = await SizeDetail.find({ _id: { $in: ids } });
+
+    for (let i = 0; i < sizeDetails.length; i++) {
+        if (result[i].quantity > sizeDetails[i].quantity) {
+            const [{ name }, { size }] = await Promise.all([
+                Shoe.findById(result[i].shoe).populate('collection_shoe'),
+                SizeDetail.findById(result[i].size_detail).populate('size')
+            ])
+            throw new Error(`The price of the  ${name} - ${size.name} shoe is bigger than the stock`);
+        }
+    }
+
+    return true;
+}
+
+const mergeItems = (items = []) => {
+    let result = [];
+    items.forEach(function(item) {
+        if (!this[item.size_detail]) {
+            this[item.size_detail] = {
+                shoe: item.shoe,
+                size_detail: item.size_detail,
+                quantity: 0
+            }
+            result.push(this[item.size_detail]);
+        }
+        this[item.size_detail].quantity += item.quantity;
+    }, Object.create(null));
+
+    return result;
+}
+
 module.exports = {
     isExistsCategory,
     isExistsCategoryById,
@@ -146,5 +196,6 @@ module.exports = {
     validateIds,
     validateQuantity,
     isExistsBarcode,
-    isExistSizes
+    isExistSizes,
+    validateItems
 }

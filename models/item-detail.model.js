@@ -9,9 +9,9 @@ const ItemDetailSchema = Schema({
             'Shoe is required'
         ]
     },
-    size: {
+    size_detail: {
         type: Schema.Types.ObjectId,
-        ref: 'size',
+        ref: 'size_detail',
         required: [
             true,
             'The size is required'
