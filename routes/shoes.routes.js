@@ -50,10 +50,7 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteShoe)
 
-router.get('/get', [
-    validateJWT,
-    withRole('ADMIN', 'USER'),
-], getShoes)
+router.get('/get', getShoes);
 
 router.get('/getById/:id', [
     validateJWT,

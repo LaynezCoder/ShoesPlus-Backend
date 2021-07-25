@@ -48,6 +48,14 @@ const ShoeSchema = Schema({
         default: true,
     },
     images: [String],
+    brand: {
+        type: Schema.Types.ObjectId,
+        ref: 'brand',
+        required: [
+            true,
+            'The brand is required'
+        ]
+    },
     collection_shoe: {
         type: Schema.Types.ObjectId,
         ref: 'collection_shoe',

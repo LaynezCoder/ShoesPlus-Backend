@@ -5,7 +5,7 @@ const { isExistsUsername, isExistsUserById } = require('../helpers/validators');
 
 const { validateFields, validateJWT, withRole } = require('../middlewares')
 
-const { signUp, login, updateProfile, deleteProfile, infoProfile, deleteUser, updateUser, createDeliveryMan } = require('../controllers/user.controller');
+const { signUp, login, updateProfile, deleteProfile, infoProfile, deleteUser, updateUser, createDeliveryMan, renewToken } = require('../controllers/user.controller');
 
 const router = Router();
 
@@ -71,6 +71,8 @@ router.delete('/delete/:id', [
     withRole('ADMIN'),
     validateFields
 ], deleteUser);
+
+router.get('/renewToken', validateJWT, renewToken);
 
 
 module.exports = router;
