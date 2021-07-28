@@ -11,6 +11,16 @@ const validateFields = (req, res, next) => {
     next();
 }
 
+const notFoundValidate = (req, res, next) => {
+    const errors = validationResult(req).formatWith(errorFormatter);
+    if (!errors.isEmpty()) {
+        return res.status(404).json({ message: errors.array()[0] });
+    }
+
+    next();
+}
+
 module.exports = {
-    validateFields
+    validateFields,
+    notFoundValidate
 }

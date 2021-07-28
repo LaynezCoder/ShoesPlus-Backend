@@ -3,9 +3,9 @@ const { check } = require('express-validator');
 
 const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExistsShoe, isExistsBarcode, isExistsShoeById, validateIds, validateQuantity, isExistSizes, validateManyIds } = require('../helpers/validators');
 
-const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
+const { validateFields, notFoundValidate, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createShoe, updateShoe, deleteShoe, getShoes, getShoeById, deleteSizes, sale, updateImageShoe } = require('../controllers/shoe.controller')
+const { createShoe, updateShoe, deleteShoe, getShoes, getSaleShoes, getShoeById, deleteSizes, sale, updateImageShoe } = require('../controllers/shoe.controller')
 
 const router = Router();
 
@@ -50,14 +50,14 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteShoe)
 
-router.get('/get', getShoes);
+router.get('/getAll', getShoes);
+
+router.get('/getSale', getSaleShoes);
 
 router.get('/getById/:id', [
-    validateJWT,
-    withRole('ADMIN', 'USER'),
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
-    validateFields
+    notFoundValidate
 ], getShoeById)
 
 router.delete('/deleteSizes/:id', [

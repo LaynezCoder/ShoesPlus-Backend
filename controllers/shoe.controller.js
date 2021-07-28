@@ -10,7 +10,6 @@ const createShoe = async(req, res) => {
     const ids = sizedetails.map(s => s._id);
 
     const { brand } = await Collection.findById(idCol);
-    console.log(brand);
 
     const shoe = new Shoe({ barcode, name: trim(name), description, price, brand, collection_shoe: idCol, category: idCat, sizes: ids });
 
@@ -49,11 +48,19 @@ const getShoes = async(req, res) => {
     res.send({ ok: true, shoes })
 }
 
+const getSaleShoes = async(req, res) => {
+    const shoes = await Shoe.find({ sale: true }).populate('collection_shoe').populate('brand');
+    res.send({ ok: true, shoes })
+}
+
 const getShoeById = async(req, res) => {
     const { id } = req.params;
-    const shoe = await Shoe.findById(id);
+    const shoe = await Shoe.findById(id).populate('sizes').populate('brand');
 
-    res.send({ ok: true, shoe })
+    const ids = shoe.sizes.map(s => s.id);
+    const sizeDetails = await SizeDetail.find({ _id: { $in: ids } }).populate('size');
+
+    res.send({ ok: true, shoe, sizeDetails })
 }
 
 const deleteSizes = async(req, res) => {
@@ -86,7 +93,7 @@ const updateImageShoe = async(req, res) => {
     const { id } = req.params;
     const { images } = req.body;
 
-    const shoe = await Shoe.findByIdAndUpdate(id, { images }, { new: true })
+    await Shoe.findByIdAndUpdate(id, { images }, { new: true })
 
     res.send({ ok: true, message: 'The images were added' })
 }
@@ -96,6 +103,7 @@ module.exports = {
     updateShoe,
     deleteShoe,
     getShoes,
+    getSaleShoes,
     getShoeById,
     deleteSizes,
     sale,
