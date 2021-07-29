@@ -8,6 +8,10 @@ const SizeSchema = Schema({
             'The name is required'
         ],
         unique: true
+    },
+    status: {
+        type: Boolean,
+        default: true
     }
 })
 

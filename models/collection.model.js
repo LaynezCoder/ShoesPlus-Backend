@@ -16,6 +16,10 @@ const CollectionSchema = Schema({
             true,
             'The brand is required'
         ]
+    },
+    status: {
+        type: Boolean,
+        default: true
     }
 })
 

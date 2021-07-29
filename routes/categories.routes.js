@@ -36,10 +36,7 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteCategory)
 
-router.get('/get', [
-    validateJWT,
-    withRole('ADMIN', 'USER'),
-], getCategories)
+router.get('/get', getCategories);
 
 router.get('/getById/:id', [
     validateJWT,

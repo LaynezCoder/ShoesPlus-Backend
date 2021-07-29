@@ -34,10 +34,7 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteBrand)
 
-router.get('/get', [
-    validateJWT,
-    withRole('ADMIN', 'USER'),
-], getBrands)
+router.get('/get', getBrands);
 
 router.get('/getById/:id', [
     validateJWT,

@@ -165,6 +165,11 @@ const createDeliveryMan = async(req, res) => {
     res.send({ ok: true, message: `Delivery man ${user.username} saved`, user });
 }
 
+const getUsers = async(req, res) => {
+    const users = await User.find({ status: true });
+    res.send({ ok: true, users });
+}
+
 const renewToken = async(req, res) => {
     res.send({ ok: true, message: 'Validated token', user: req.user });
 }
@@ -176,6 +181,7 @@ module.exports = {
     updateProfile,
     deleteProfile,
     infoProfile,
+    getUsers,
     deleteUser,
     updateUser,
     createDeliveryMan,

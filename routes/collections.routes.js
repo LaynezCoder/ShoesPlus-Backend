@@ -36,10 +36,7 @@ router.delete('/delete/:id', [
     validateFields
 ], deleteCollection)
 
-router.get('/get', [
-    validateJWT,
-    withRole('ADMIN', 'USER'),
-], getCollections)
+router.get('/get', getCollections);
 
 router.get('/getById/:id', [
     validateJWT,

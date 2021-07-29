@@ -1,7 +1,7 @@
 const { trim } = require('../helpers')
 const { Collection, Brand } = require('../models')
 
-const createCollection = async (req, res) => {
+const createCollection = async(req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     const collection = new Collection({ name: trim(name), brand: id });
@@ -11,7 +11,7 @@ const createCollection = async (req, res) => {
     res.send({ ok: true, message: `Collection ${collection.name} saved`, collection });
 }
 
-const updateCollection = async (req, res) => {
+const updateCollection = async(req, res) => {
     const { id } = req.params;
     const { name } = req.body;
 
@@ -28,7 +28,7 @@ const updateCollection = async (req, res) => {
     res.send({ ok: true, message: `Collection ${collection.name} updated`, collection });
 }
 
-const deleteCollection = async (req, res) => {
+const deleteCollection = async(req, res) => {
     const { id } = req.params;
 
     const collection = await Collection.findByIdAndUpdate(id, { status: false }, { new: true });
@@ -36,17 +36,17 @@ const deleteCollection = async (req, res) => {
     res.send({ ok: true, message: `Collection ${collection.name} deleted`, collection });
 }
 
-const getCollections = async (req, res) => {
-    const sizes = await Size.find({});
+const getCollections = async(req, res) => {
+    const collections = await Collection.find({});
 
-    res.send({ ok: true, sizes })
+    res.send({ ok: true, collections })
 }
 
-const getCollectionById = async (req, res) => {
+const getCollectionById = async(req, res) => {
     const { id } = req.params;
-    const size = await Size.findById(id);
+    const collection = await Collection.findById(id);
 
-    res.send({ ok: true, size })
+    res.send({ ok: true, size: collection })
 }
 
 
