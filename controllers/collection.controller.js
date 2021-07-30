@@ -37,7 +37,7 @@ const deleteCollection = async(req, res) => {
 }
 
 const getCollections = async(req, res) => {
-    const collections = await Collection.find({});
+    const collections = await Collection.find({ status: true });
 
     res.send({ ok: true, collections })
 }

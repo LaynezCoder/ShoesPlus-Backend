@@ -128,7 +128,7 @@ const updateUser = async(req, res) => {
     const { id } = req.params;
     const { role } = req.body;
 
-    const roles = ['user', 'admin'];
+    const roles = ['user', 'admin', 'delivery_man'];
 
     if (!roles.includes(role.toLowerCase())) {
         return res.status(400).send({ message: `The ${role} role is invalid` });
@@ -136,15 +136,15 @@ const updateUser = async(req, res) => {
 
     const find = await User.findById(id);
     if (find.id == idUserReq) {
-        return res.status(400).send({ messages: 'I cant update yourself' })
+        return res.status(400).send({ message: 'I cant update yourself' })
     }
 
     if (find.role === 'DELIVERY_MAN') {
-        return res.status(400).send({ messages: 'You cannot update this type of user' })
+        return res.status(400).send({ message: 'You cannot update this type of user' })
     }
 
     if (find.role === 'ADMIN' && role !== 'ADMIN') {
-        return res.status(400).send({ messages: 'You cannot upgrade to administrator type user' })
+        return res.status(400).send({ message: 'You cannot upgrade to administrator type user' })
     }
 
     const user = await User.findByIdAndUpdate(id, { role: role.toUpperCase() }, { new: true });
@@ -152,21 +152,21 @@ const updateUser = async(req, res) => {
     res.send({ ok: true, message: `User ${user.username} updated`, user })
 }
 
-const createDeliveryMan = async(req, res) => {
-    const { firstname, lastname, username, password, email } = req.body;
+const createUser = async(req, res) => {
+    const { firstname, lastname, username, password, email, role } = req.body;
 
-    const user = new User({ firstname, lastname, username: trim(username), password, email, role: 'DELIVERY_MAN' });
+    const user = new User({ firstname, lastname, username: trim(username), password, email, role });
 
     const salt = bcryptjs.genSaltSync(10);
     user.password = bcryptjs.hashSync(password, salt);
 
     await user.save();
 
-    res.send({ ok: true, message: `Delivery man ${user.username} saved`, user });
+    res.send({ ok: true, message: `User ${user.username} saved`, user });
 }
 
 const getUsers = async(req, res) => {
-    const users = await User.find({ status: true });
+    const users = await User.find({ status: true }).sort({ role: 1 });
     res.send({ ok: true, users });
 }
 
@@ -184,6 +184,6 @@ module.exports = {
     getUsers,
     deleteUser,
     updateUser,
-    createDeliveryMan,
+    createUser,
     renewToken
 }

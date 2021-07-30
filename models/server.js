@@ -16,7 +16,6 @@ class Server {
             brands: '/v1/brands',
             sizes: '/v1/sizes',
             collections: '/v1/collections',
-            shoes: '/v1/shoes',
             orders: '/v1/orders'
         }
 
