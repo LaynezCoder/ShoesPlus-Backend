@@ -1,7 +1,7 @@
 const { Brand } = require('../models')
 const { trim } = require('../helpers')
 
-const createBrand = async (req, res) => {
+const createBrand = async(req, res) => {
     const { name } = req.body;
     const brand = new Brand({ name: trim(name) });
 
@@ -10,7 +10,7 @@ const createBrand = async (req, res) => {
     res.send({ ok: true, message: `Brand ${brand.name} saved`, brand });
 }
 
-const updateBrand = async (req, res) => {
+const updateBrand = async(req, res) => {
     const { id } = req.params;
     const { name } = req.body;
 
@@ -27,7 +27,7 @@ const updateBrand = async (req, res) => {
     res.send({ ok: true, message: `Brand ${brand.name} updated`, brand });
 }
 
-const deleteBrand = async (req, res) => {
+const deleteBrand = async(req, res) => {
     const { id } = req.params;
 
     const brand = await Brand.findByIdAndUpdate(id, { status: false }, { new: true });
@@ -35,13 +35,13 @@ const deleteBrand = async (req, res) => {
     res.send({ ok: true, message: `Brand ${brand.name} deleted`, brand });
 }
 
-const getBrands = async (req, res) => {
-    const brands = await Brand.find({});
+const getBrands = async(req, res) => {
+    const brands = await Brand.find({ status: true });
 
     res.send({ ok: true, brands })
 }
 
-const getBrandById = async (req, res) => {
+const getBrandById = async(req, res) => {
     const { id } = req.params;
     const brand = await Brand.findById(id);
 

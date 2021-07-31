@@ -43,14 +43,30 @@ const deleteShoe = async(req, res) => {
     res.send({ ok: true, message: `Shoe ${shoe.name} deleted`, shoe });
 }
 
+const searchShoes = async(req, res) => {
+    const { value } = req.params;
+
+    let replace = value.replace(/[^a-z0-9]/gi, '');
+    const regex = new RegExp(replace, 'i')
+    const shoes = await Shoe.find({ name: regex, status: true }).populate('collection_shoe').populate('brand');
+
+    res.send({ ok: true, shoes });
+}
+
 const getShoes = async(req, res) => {
-    const shoes = await Shoe.find({}).populate('collection_shoe').populate('brand');
+    const shoes = await Shoe.find({ status: true }).populate('collection_shoe').populate('brand');
     res.send({ ok: true, shoes })
 }
 
 const getSaleShoes = async(req, res) => {
     const shoes = await Shoe.find({ sale: true }).populate('collection_shoe').populate('brand');
     res.send({ ok: true, shoes })
+}
+
+const getShoesByReference = async(req, res) => {
+    const { id } = req.params;
+    const shoes = await Shoe.find({ $or: [{ brand: id }, { collection_shoe: id }, { category: id }] });
+    res.send({ ok: true, shoes });
 }
 
 const getShoeById = async(req, res) => {
@@ -66,8 +82,8 @@ const getShoeById = async(req, res) => {
 const deleteSizes = async(req, res) => {
     const { id } = req.params;
     const { sizes } = req.body;
-    console.log(sizes);
-    const sizedetails = await SizeDetail.deleteMany({ _id: { $in: sizes } })
+
+    await SizeDetail.deleteMany({ _id: { $in: sizes } })
 
     const sizesdeleted = await Shoe.findByIdAndUpdate(id, { $pull: { sizes: { $in: sizes } } })
 
@@ -104,8 +120,10 @@ module.exports = {
     deleteShoe,
     getShoes,
     getSaleShoes,
+    getShoesByReference,
     getShoeById,
     deleteSizes,
     sale,
-    updateImageShoe
+    updateImageShoe,
+    searchShoes
 }

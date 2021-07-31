@@ -5,7 +5,7 @@ const { isExistsCollectionById, isExistsSizeById, isExistsCategoryById, isExists
 
 const { validateFields, notFoundValidate, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createShoe, updateShoe, deleteShoe, getShoes, getSaleShoes, getShoeById, deleteSizes, sale, updateImageShoe } = require('../controllers/shoe.controller')
+const { createShoe, updateShoe, deleteShoe, getShoes, getSaleShoes, getShoesByReference, getShoeById, deleteSizes, sale, updateImageShoe, searchShoes } = require('../controllers/shoe.controller')
 
 const router = Router();
 
@@ -54,6 +54,13 @@ router.get('/getAll', getShoes);
 
 router.get('/getSale', getSaleShoes);
 
+router.get('/search/:value', searchShoes);
+
+router.get('/getShoesByReference/:id', [
+    check('id', 'This id is invalid').isMongoId(),
+    notFoundValidate
+], getShoesByReference);
+
 router.get('/getById/:id', [
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
@@ -87,7 +94,5 @@ router.put('/saveImages/:id', [
     check('images', 'The images is required').isArray().not().isEmpty(),
     validateFields,
 ], updateImageShoe)
-
-
 
 module.exports = router;
