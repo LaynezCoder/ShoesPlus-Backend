@@ -65,7 +65,10 @@ const getSaleShoes = async(req, res) => {
 
 const getShoesByReference = async(req, res) => {
     const { id } = req.params;
-    const shoes = await Shoe.find({ $or: [{ brand: id }, { collection_shoe: id }, { category: id }] });
+
+    const shoes = await Shoe.find({ $or: [{ brand: id }, { collection_shoe: id }, { category: id }] })
+        .populate('collection_shoe').populate('brand').populate('category');
+
     res.send({ ok: true, shoes });
 }
 
