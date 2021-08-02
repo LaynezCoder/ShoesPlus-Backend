@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const ShoeSchema = Schema({
     barcode: {
-        type: Number,
+        type: String,
         required: [
             true,
             'The barcode is required'

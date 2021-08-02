@@ -3,7 +3,7 @@ const { Shoe, SizeDetail, Collection } = require('../models')
 
 const createShoe = async(req, res) => {
     const { idCol, idCat } = req.params;
-    const { barcode, name, description, price, sizes, images } = req.body;
+    const { barcode, name, description, price, sizes } = req.body;
 
     const sizedetails = await SizeDetail.insertMany(sizes)
 
@@ -11,7 +11,7 @@ const createShoe = async(req, res) => {
 
     const { brand } = await Collection.findById(idCol);
 
-    const shoe = new Shoe({ barcode, name: trim(name), description, price, brand, collection_shoe: idCol, category: idCat, sizes: ids, images });
+    const shoe = new Shoe({ barcode, name: trim(name), description, price, brand, collection_shoe: idCol, category: idCat, sizes: ids });
 
     await SizeDetail.updateMany({ _id: { $in: ids } }, { shoe: shoe._id })
 

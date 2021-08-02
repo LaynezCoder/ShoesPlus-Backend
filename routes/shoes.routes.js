@@ -14,7 +14,7 @@ router.post('/create/:idCat/:idCol', [
     isAdmin,
     check('sizes', 'This sizes is required').isArray(),
     check('name', 'This name is required').not().isEmpty(),
-    check('barcode', 'This needs to be a barcode number!').isNumeric(),
+    check('barcode', 'This needs to be a barcode number!').not().isEmpty(),
     check('description', 'This description is required').not().isEmpty(),
     check('price', 'This needs to be a price!').isNumeric(),
     check('idCat', 'This id is invalid').isMongoId(),
@@ -26,8 +26,6 @@ router.post('/create/:idCat/:idCol', [
     check('sizes').custom(validateIds),
     check('sizes').custom(validateQuantity),
     check('sizes').custom(isExistSizes),
-    check('images', 'Images is required').isArray(),
-    check('images', 'Images is required').isArray().not().isEmpty(),
     validateFields,
 ], createShoe);
 
@@ -37,7 +35,7 @@ router.put('/update/:id', [
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsShoeById),
     check('name', 'This name is required').not().isEmpty(),
-    check('barcode', 'This needs to be a barcode number!').isNumeric(),
+    check('barcode', 'This needs to be a barcode number!').not().isEmpty(),
     check('description', 'This description is required').not().isEmpty(),
     check('price', 'This needs to be a price!').isNumeric(),
     check('barcode').custom(isExistsBarcode),

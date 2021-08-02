@@ -7,14 +7,14 @@ const { trim } = require('./string-utils');
 const isExistsCategory = async(name) => {
     const isExistsCategory = await Category.findOne({ name: trim(name), status: true });
     if (isExistsCategory) {
-        throw new Error(`This ${isExistsCategory.name} already exists`);
+        throw new Error(`This category with id ${isExistsCategory.name} already exists`);
     }
 }
 
 const isExistsCategoryById = async(id) => {
     const isExistsCategory = await Category.findById(id);
     if (!isExistsCategory) {
-        throw new Error(`This ${id} doesn't exists`);
+        throw new Error(`This category with id ${id} doesn't exists`);
     }
 }
 
@@ -62,7 +62,7 @@ const isExistsCollection = async(name) => {
 const isExistsCollectionById = async(id) => {
     const isExistsCollection = await Collection.findById(id);
     if (!isExistsCollection) {
-        throw new Error(`This ${id} doesn't exists`);
+        throw new Error(`This collection with id ${id} doesn't exists`);
     }
 }
 
