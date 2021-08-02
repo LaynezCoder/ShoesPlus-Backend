@@ -1,4 +1,4 @@
-const { Brand } = require('../models')
+const { Brand, Shoe } = require('../models')
 const { trim } = require('../helpers')
 
 const createBrand = async(req, res) => {
@@ -29,6 +29,12 @@ const updateBrand = async(req, res) => {
 
 const deleteBrand = async(req, res) => {
     const { id } = req.params;
+
+    const find = await Shoe.find({ brand: id });
+
+    if (find.length > 0) {
+        return res.status(400).send({ message: `Can't delete this brand` })
+    }
 
     const brand = await Brand.findByIdAndUpdate(id, { status: false }, { new: true });
 

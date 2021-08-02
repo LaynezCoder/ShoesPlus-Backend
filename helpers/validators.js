@@ -5,7 +5,7 @@ const { User, Category, Brand, Size, Collection, Shoe, SizeDetail, ItemDetail } 
 const { trim } = require('./string-utils');
 
 const isExistsCategory = async(name) => {
-    const isExistsCategory = await Category.findOne({ name: trim(name) });
+    const isExistsCategory = await Category.findOne({ name: trim(name), status: true });
     if (isExistsCategory) {
         throw new Error(`This ${isExistsCategory.name} already exists`);
     }

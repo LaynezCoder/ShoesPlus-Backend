@@ -1,7 +1,7 @@
 const { trim } = require('../helpers')
-const { Category } = require('../models')
+const { Category, Shoe } = require('../models')
 
-const createCategory = async (req, res) => {
+const createCategory = async(req, res) => {
     const { name, description } = req.body;
     const category = new Category({ name: trim(name), description });
 
@@ -10,7 +10,7 @@ const createCategory = async (req, res) => {
     res.send({ ok: true, message: `Category ${category.name} saved`, category });
 }
 
-const updateCategory = async (req, res) => {
+const updateCategory = async(req, res) => {
     const { id } = req.params;
     const { name, description } = req.body;
 
@@ -27,21 +27,27 @@ const updateCategory = async (req, res) => {
     res.send({ ok: true, message: `Category ${category.name} updated`, category });
 }
 
-const deleteCategory = async (req, res) => {
+const deleteCategory = async(req, res) => {
     const { id } = req.params;
+
+    const find = await Shoe.find({ category: id });
+
+    if (find.length > 0) {
+        return res.status(400).send({ message: `Can't delete this category` })
+    }
 
     const category = await Category.findByIdAndUpdate(id, { status: false }, { new: true });
 
     res.send({ ok: true, message: `Category ${category.name} deleted`, category });
 }
 
-const getCategories = async (req, res) => {
+const getCategories = async(req, res) => {
     const categories = await Category.find({ status: true });
 
     res.send({ ok: true, categories })
 }
 
-const getCategoryById = async (req, res) => {
+const getCategoryById = async(req, res) => {
     const { id } = req.params;
     const category = await Category.findById(id);
 

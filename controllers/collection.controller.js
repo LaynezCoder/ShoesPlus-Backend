@@ -1,5 +1,5 @@
 const { trim } = require('../helpers')
-const { Collection, Brand } = require('../models')
+const { Collection, Shoe } = require('../models')
 
 const createCollection = async(req, res) => {
     const { id } = req.params;
@@ -30,6 +30,12 @@ const updateCollection = async(req, res) => {
 
 const deleteCollection = async(req, res) => {
     const { id } = req.params;
+
+    const find = await Shoe.find({ collection_shoe: id });
+
+    if (find.length > 0) {
+        return res.status(400).send({ message: `Can't delete this collection` })
+    }
 
     const collection = await Collection.findByIdAndUpdate(id, { status: false }, { new: true });
 

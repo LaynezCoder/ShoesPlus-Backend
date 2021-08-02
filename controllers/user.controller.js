@@ -118,6 +118,16 @@ const infoProfile = async(req, res) => {
 const deleteUser = async(req, res) => {
     const { id } = req.params;
 
+    const find = await User.findById(id);
+
+    if (find.orders.length > 0) {
+        return res.status(400).send({ message: 'Cant delete this user' })
+    }
+
+    if (find.role === 'ADMIN') {
+        return res.status(400).send({ message: 'You cannot remove administrators' })
+    }
+
     const user = await User.findByIdAndUpdate(id, { status: false });
 
     res.send({ ok: true, message: `User ${user.username} deleted`, user })
@@ -171,7 +181,10 @@ const getUsers = async(req, res) => {
 }
 
 const renewToken = async(req, res) => {
-    res.send({ ok: true, message: 'Validated token', user: req.user });
+    const user = req.user;
+    const token = await generateJWT(user.id)
+
+    res.send({ ok: true, message: 'Validated token', user, token });
 }
 
 module.exports = {
