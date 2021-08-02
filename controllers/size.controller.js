@@ -21,6 +21,12 @@ const updateSize = async(req, res) => {
 const deleteSize = async(req, res) => {
     const { id } = req.params;
 
+    const find = await SizeDetail.find({ size: id });
+
+    if (find.length > 0) {
+        return res.status(400).send({ message: `Can't delete this size` })
+    }
+
     const size = await Size.findByIdAndUpdate(id, { status: false }, { new: true });
 
     res.send({ ok: true, message: `Size ${size.name} deleted`, size });

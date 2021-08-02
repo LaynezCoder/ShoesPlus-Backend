@@ -39,7 +39,7 @@ const isExistsBrandById = async(id) => {
 }
 
 const isExistsSize = async(name) => {
-    const isExistsSize = await Size.findOne({ name: trim(name) });
+    const isExistsSize = await Size.findOne({ name: name });
     if (isExistsSize) {
         throw new Error(`This ${isExistsSize.name} already exists`);
     }

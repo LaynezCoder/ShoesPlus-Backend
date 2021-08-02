@@ -23,7 +23,6 @@ router.put('/update/:id', [
     isAdmin,
     check('id', 'This id is invalid').isMongoId(),
     check('id').custom(isExistsSizeById),
-    check('name', 'This name is required').not().isEmpty(),
     check('name', 'This needs to be a size number!').isNumeric(),
     check('name').custom(isExistsSize),
     validateFields
