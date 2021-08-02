@@ -26,6 +26,8 @@ router.post('/create/:idCat/:idCol', [
     check('sizes').custom(validateIds),
     check('sizes').custom(validateQuantity),
     check('sizes').custom(isExistSizes),
+    check('images', 'Images is required').isArray(),
+    check('images', 'Images is required').isArray().not().isEmpty(),
     validateFields,
 ], createShoe);
 

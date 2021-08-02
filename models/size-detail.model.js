@@ -9,6 +9,10 @@ const SizeDetailSchema = Schema({
             'The size is required'
         ]
     },
+    shoe: {
+        type: Schema.Types.ObjectId,
+        ref: 'shoe'
+    },
     color: {
         type: String,
         required: [

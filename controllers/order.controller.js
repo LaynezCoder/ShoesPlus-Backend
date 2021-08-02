@@ -120,7 +120,15 @@ const getItemsDetails = async(req, res) => {
     const idShoes = items.map(i => i.shoe);
     const idSizeDetails = items.map(i => i.size_detail);
 
-    const shoes = await Shoe.find({ _id: { $in: idShoes } });
+    const shoesFind = await SizeDetail.find({
+        $and: [
+            { _id: { $in: idSizeDetails } },
+            { shoe: { $in: idShoes } }
+        ]
+    }).populate('shoe').populate('size');
+
+    const shoes = shoesFind.map(sd => (sd.shoe));
+
     const sizeDetails = await SizeDetail.find({ _id: { $in: idSizeDetails } })
         .populate('size');
 
