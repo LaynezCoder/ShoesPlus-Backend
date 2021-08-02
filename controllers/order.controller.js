@@ -147,7 +147,13 @@ const getItemsDetails = async(req, res) => {
     res.send({ ok: true, shoes, sizeDetails })
 }
 
+const allOrders = async(req, res) => {
+    const orders = await Order.find({});
+    res.send({ ok: true, orders })
+}
+
 module.exports = {
+    allOrders,
     getOrder,
     createOrder,
     cancelOrder,

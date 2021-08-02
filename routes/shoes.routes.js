@@ -38,7 +38,6 @@ router.put('/update/:id', [
     check('barcode', 'This needs to be a barcode number!').not().isEmpty(),
     check('description', 'This description is required').not().isEmpty(),
     check('price', 'This needs to be a price!').isNumeric(),
-    check('barcode').custom(isExistsBarcode),
     validateFields
 ], updateShoe)
 

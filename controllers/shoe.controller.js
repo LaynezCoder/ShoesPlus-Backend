@@ -1,5 +1,5 @@
 const { trim } = require('../helpers')
-const { Shoe, SizeDetail, Collection } = require('../models')
+const { Shoe, SizeDetail, Collection, ItemDetail } = require('../models')
 
 const createShoe = async(req, res) => {
     const { idCol, idCat } = req.params;
@@ -24,7 +24,7 @@ const updateShoe = async(req, res) => {
     const { id } = req.params;
     const { barcode, name, description, price } = req.body;
 
-    const find = await Shoe.findOne({ name: trim(name) });
+    const find = await Shoe.findOne({ barcode });
 
     if (find) {
         if (id != find._id) {
@@ -39,6 +39,12 @@ const updateShoe = async(req, res) => {
 
 const deleteShoe = async(req, res) => {
     const { id } = req.params;
+
+    const find = await ItemDetail.find({ shoe: id });
+
+    if (find) {
+        return res.status(400).send({ message: `This shoe cannot be removed` })
+    }
 
     const shoe = await Shoe.findByIdAndUpdate(id, { status: false }, { new: true });
 

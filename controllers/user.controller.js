@@ -64,7 +64,7 @@ const login = async(req, res) => {
 const updateProfile = async(req, res) => {
     const { id } = req.user;
 
-    const { firstname, lastname, username, password, email } = req.body;
+    const { firstname, lastname, username, email } = req.body;
 
     const find = await User.findOne({ username: trim(username) });
 
@@ -74,10 +74,7 @@ const updateProfile = async(req, res) => {
         }
     }
 
-    const salt = bcryptjs.genSaltSync(10);
-    const hash = bcryptjs.hashSync(password, salt);
-
-    const user = await User.findByIdAndUpdate(id, { firstname, lastname, username: trim(username), password: hash, email }, { new: true });
+    const user = await User.findByIdAndUpdate(id, { firstname, lastname, username: trim(username), email }, { new: true });
 
     res.send({ ok: true, message: 'Updated profile', user })
 }

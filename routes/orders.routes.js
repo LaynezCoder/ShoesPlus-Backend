@@ -3,9 +3,9 @@ const { check } = require('express-validator');
 
 const { validateItems, validateQuantity } = require('../helpers/validators');
 
-const { validateFields, validateJWT, withRole, notFoundValidate } = require('../middlewares')
+const { validateFields, validateJWT, withRole, notFoundValidate, isAdmin } = require('../middlewares')
 
-const { getOrder, createOrder, cancelOrder, deliverOrder, getItemsDetails, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
+const { getOrder, allOrders, createOrder, cancelOrder, deliverOrder, getItemsDetails, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
 
 const router = Router();
 
@@ -72,5 +72,11 @@ router.get('/getCanceledOrders', [
     validateJWT,
     withRole('ADMIN')
 ], getCanceledOrders);
+
+router.get('/allOrders', [
+    validateJWT,
+    isAdmin,
+    validateFields
+], allOrders)
 
 module.exports = router;
