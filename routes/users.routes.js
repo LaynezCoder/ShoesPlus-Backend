@@ -47,7 +47,7 @@ router.put('/updateProfile', [
     validateFields
 ], updateProfile);
 
-router.delete('/deleteProfile', [
+router.put('/deleteProfile', [
     validateJWT,
     check('password', 'Password is required').not().isEmpty(),
     validateFields

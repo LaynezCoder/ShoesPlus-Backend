@@ -1,6 +1,6 @@
-const { Size } = require('../models')
+const { Size, SizeDetail } = require('../models')
 
-const createSize = async (req, res) => {
+const createSize = async(req, res) => {
     const { name } = req.body;
     const size = new Size({ name });
 
@@ -9,7 +9,7 @@ const createSize = async (req, res) => {
     res.send({ ok: true, message: `Size ${size.name} saved`, size });
 }
 
-const updateSize = async (req, res) => {
+const updateSize = async(req, res) => {
     const { id } = req.params;
     const { name } = req.body;
 
@@ -18,7 +18,7 @@ const updateSize = async (req, res) => {
     res.send({ ok: true, message: `Size ${size.name} updated`, size });
 }
 
-const deleteSize = async (req, res) => {
+const deleteSize = async(req, res) => {
     const { id } = req.params;
 
     const size = await Size.findByIdAndUpdate(id, { status: false }, { new: true });
@@ -26,25 +26,32 @@ const deleteSize = async (req, res) => {
     res.send({ ok: true, message: `Size ${size.name} deleted`, size });
 }
 
-const getSizes = async (req, res) => {
-    const sizes = await Size.find({});
+const getSizes = async(req, res) => {
+    const sizes = await Size.find({ status: true });
 
     res.send({ ok: true, sizes })
 }
 
-const getSizeById = async (req, res) => {
+const getSizeById = async(req, res) => {
     const { id } = req.params;
     const size = await Size.findById(id);
 
     res.send({ ok: true, size })
 }
 
+const checkStockOfSize = async(req, res) => {
+    const { id } = req.params;
 
+    const sizeDetail = await SizeDetail.findById(id);
+
+    res.send({ ok: true, sizeDetail });
+}
 
 module.exports = {
     createSize,
     updateSize,
     deleteSize,
     getSizes,
-    getSizeById
+    getSizeById,
+    checkStockOfSize
 }

@@ -77,7 +77,7 @@ const getShoeById = async(req, res) => {
     const shoe = await Shoe.findById(id).populate('sizes').populate('brand');
 
     const ids = shoe.sizes.map(s => s.id);
-    const sizeDetails = await SizeDetail.find({ _id: { $in: ids } }).populate('size');
+    const sizeDetails = await SizeDetail.find({ _id: { $in: ids }, quantity: { $gt: 0 } }).populate('size');
 
     res.send({ ok: true, shoe, sizeDetails })
 }

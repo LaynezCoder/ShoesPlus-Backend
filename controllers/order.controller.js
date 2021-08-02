@@ -114,10 +114,24 @@ const getCanceledOrders = async(req, res) => {
     res.send({ ok: true, total: orders.length, orders })
 }
 
+const getItemsDetails = async(req, res) => {
+    const { items } = req.body;
+
+    const idShoes = items.map(i => i.shoe);
+    const idSizeDetails = items.map(i => i.size_detail);
+
+    const shoes = await Shoe.find({ _id: { $in: idShoes } });
+    const sizeDetails = await SizeDetail.find({ _id: { $in: idSizeDetails } })
+        .populate('size');
+
+    res.send({ ok: true, shoes, sizeDetails })
+}
+
 module.exports = {
     createOrder,
     cancelOrder,
     deliverOrder,
+    getItemsDetails,
     getCompletedOrders,
     getOnHoldOrders,
     getCanceledOrders

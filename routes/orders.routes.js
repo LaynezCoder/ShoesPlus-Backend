@@ -5,7 +5,7 @@ const { validateItems, validateQuantity } = require('../helpers/validators');
 
 const { validateFields, validateJWT, withRole } = require('../middlewares')
 
-const { createOrder, cancelOrder, deliverOrder, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
+const { createOrder, cancelOrder, deliverOrder, getItemsDetails, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
 
 const router = Router();
 
@@ -42,6 +42,14 @@ router.put('/deliverOrder/:id', [
     validateJWT,
     withRole('DELIVERY_MAN')
 ], deliverOrder);
+
+router.post('/getItemsDetails', [
+    check('items', 'Items is required').isArray(),
+    check('items', 'Items is required').isArray().not().isEmpty(),
+    check('items').custom(validateQuantity),
+    check('items').custom(validateItems),
+    validateFields
+], getItemsDetails);
 
 router.get('/getCompletedOrders', [
     validateJWT,

@@ -1,11 +1,11 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { isExistsSize, isExistsSizeById } = require('../helpers/validators');
+const { isExistsSize, isExistsSizeById, isExistsSizeDetailById } = require('../helpers/validators');
 
 const { validateFields, validateJWT, isAdmin, withRole } = require('../middlewares')
 
-const { createSize, updateSize, deleteSize, getSizes, getSizeById } = require('../controllers/size.controller')
+const { createSize, updateSize, deleteSize, getSizes, getSizeById, checkStockOfSize } = require('../controllers/size.controller')
 
 const router = Router();
 
@@ -41,6 +41,12 @@ router.get('/get', [
     validateJWT,
     withRole('ADMIN', 'USER'),
 ], getSizes)
+
+router.get('/checkStockOfSize/:id', [
+    check('id', 'This id is invalid').isMongoId(),
+    check('id').custom(isExistsSizeDetailById),
+    validateFields
+], checkStockOfSize);
 
 router.get('/getById/:id', [
     validateJWT,

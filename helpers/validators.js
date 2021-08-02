@@ -88,6 +88,13 @@ const isExistsShoeById = async(id) => {
     }
 }
 
+const isExistsSizeDetailById = async(id) => {
+    const sizeDetail = await SizeDetail.findById(id);
+    if (!sizeDetail) {
+        throw new Error(`The size detail with id ${id} doesn't exists`);
+    }
+}
+
 const isExistsBarcode = async(barcode) => {
     const isExistsBarcode = await Shoe.findOne({ barcode });
     if (isExistsBarcode) {
@@ -208,6 +215,7 @@ module.exports = {
     isExistsSizeById,
     isExistsCollection,
     isExistsCollectionById,
+    isExistsSizeDetailById,
     isExistsShoe,
     isExistsShoeById,
     validateIds,
