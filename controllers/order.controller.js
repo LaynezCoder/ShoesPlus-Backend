@@ -31,7 +31,7 @@ const getAmount = async(items = [], express) => {
     }
 
     if (express) {
-        total += 250;
+        total += 500;
     }
 
     return total;
@@ -99,6 +99,18 @@ const deliverOrder = async(req, res) => {
     res.send({ ok: true, message: `The order with id ${id} has been delivered successfully` })
 }
 
+const getOrder = async(req, res) => {
+    const { id } = req.params;
+
+    const order = await Order.findById(id)
+
+    const ids = order.items.map(i => i._id);
+    const items = await ItemDetail.find({ _id: { $in: ids } }).populate('shoe').populate('size_detail');
+
+    res.send({ ok: true, order, items })
+}
+
+
 const getCompletedOrders = async(req, res) => {
     const orders = await Order.find({ status: 'SUCCESS' });
     res.send({ ok: true, total: orders.length, orders })
@@ -136,6 +148,7 @@ const getItemsDetails = async(req, res) => {
 }
 
 module.exports = {
+    getOrder,
     createOrder,
     cancelOrder,
     deliverOrder,

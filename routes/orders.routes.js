@@ -3,9 +3,9 @@ const { check } = require('express-validator');
 
 const { validateItems, validateQuantity } = require('../helpers/validators');
 
-const { validateFields, validateJWT, withRole } = require('../middlewares')
+const { validateFields, validateJWT, withRole, notFoundValidate } = require('../middlewares')
 
-const { createOrder, cancelOrder, deliverOrder, getItemsDetails, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
+const { getOrder, createOrder, cancelOrder, deliverOrder, getItemsDetails, getCompletedOrders, getOnHoldOrders, getCanceledOrders } = require('../controllers/order.controller');
 
 const router = Router();
 
@@ -55,6 +55,13 @@ router.get('/getCompletedOrders', [
     validateJWT,
     withRole('ADMIN')
 ], getCompletedOrders);
+
+router.get('/getOrder/:id', [
+    validateJWT,
+    withRole('USER'),
+    check('id', 'This id is invalid').isMongoId(),
+    notFoundValidate
+], getOrder);
 
 router.get('/getOnHoldOrders', [
     validateJWT,

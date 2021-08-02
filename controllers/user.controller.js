@@ -110,7 +110,7 @@ const deleteProfile = async(req, res) => {
 const infoProfile = async(req, res) => {
     const { id } = req.user;
 
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate('orders');
 
     res.send({ ok: true, user });
 }
